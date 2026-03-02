@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1772491309914,
+      "tag": "0000_hard_tyrannus",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1772491615210,
+      "tag": "0001_striped_agent_brand",
+      "breakpoints": true
+    }
+  ]
+}
