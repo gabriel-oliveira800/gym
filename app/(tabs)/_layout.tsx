@@ -1,33 +1,64 @@
-import { Tabs } from 'expo-router';
-import React from 'react';
+import React from "react";
 
-import { HapticTab } from '@/components/haptic-tab';
-import { IconSymbol } from '@/components/ui/icon-symbol';
-import { Colors } from '@/constants/theme';
-import { useColorScheme } from '@/hooks/use-color-scheme';
+import { Tabs } from "expo-router";
+import { BarChart3, Dumbbell, Home, LayoutGrid } from 'lucide-react-native';
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function TabLayout() {
-  const colorScheme = useColorScheme();
+import TabHeader from "@/components/tab-header";
+
+export default function Layout() {
+  const padding = 16;
+  const insets = useSafeAreaInsets();
 
   return (
     <Tabs
+      safeAreaInsets={{
+        top: Math.max(insets.top, padding),
+        bottom: Math.max(insets.bottom, padding),
+        left: Math.max(insets.left, padding),
+        right: Math.max(insets.right, padding),
+      }}
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
-        headerShown: false,
-        tabBarButton: HapticTab,
-      }}>
+        headerShown: true,
+        header: () => <TabHeader />,
+        tabBarActiveTintColor: "#f97316",
+        tabBarInactiveTintColor: "#6b7280",
+        tabBarStyle: {
+          borderTopWidth: 1,
+          borderTopColor: "#1f2937",
+          backgroundColor: "#111827F2",
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Home',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="house.fill" color={color} />,
+          title: "Home",
+          tabBarIcon: ({ color }) => <Home size={24} color={color} />,
         }}
       />
+
       <Tabs.Screen
-        name="explore"
+        name="exercises"
         options={{
-          title: 'Explore',
-          tabBarIcon: ({ color }) => <IconSymbol size={28} name="paperplane.fill" color={color} />,
+          title: "Exercícios",
+          tabBarIcon: ({ color }) => <Dumbbell size={24} color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="segments"
+        options={{
+          title: "Segmentos",
+          tabBarIcon: ({ color }) => <LayoutGrid size={24} color={color} />,
+        }}
+      />
+
+      <Tabs.Screen
+        name="stats"
+        options={{
+          title: "Estatísticas",
+          tabBarIcon: ({ color }) => <BarChart3 size={24} color={color} />,
         }}
       />
     </Tabs>
