@@ -7,6 +7,7 @@ import { ActivityIndicator } from "react-native";
 import { DB_NAME, initDb } from '@/db/db';
 
 import BgContainer from '@/components/bg-container';
+import { ModalsProvider } from '@/contexts/modal-context';
 
 import '@/global.css';
 
@@ -36,9 +37,11 @@ export default function RootLayout() {
         databaseName={DB_NAME}
         options={{ enableChangeListener: true }}
         useSuspense>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
+        <ModalsProvider>
+          <Stack>
+            <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+          </Stack>
+        </ModalsProvider>
       </SQLiteProvider>
     </Suspense>
   );
