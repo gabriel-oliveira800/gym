@@ -42,4 +42,5 @@ app-example
 /ios
 /android
 
-_docs/
+assets/gifs/**/*
+!assets/gifs/**/*.rar

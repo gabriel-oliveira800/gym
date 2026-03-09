@@ -3,7 +3,7 @@ import { Pressable, PressableProps, Text } from "react-native";
 
 import { Workout } from "@/service/data/workout";
 
-import AddButton from "./add-button";
+import AddButton from "@/components/buttons/add-button";
 
 interface WorkoutItemProps extends PressableProps {
     workout: Workout;

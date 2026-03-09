@@ -1,4 +1,4 @@
-import { eq, InferInsertModel, InferSelectModel } from "drizzle-orm";
+import { asc, eq, InferInsertModel, InferSelectModel } from "drizzle-orm";
 
 import { sqlDb } from "@/db/db";
 import { workouts } from "@/db/schema";
@@ -16,7 +16,7 @@ class Repository {
     }
 
     async getWorkouts(): Promise<Workout[]> {
-        const raw = await sqlDb.select().from(workouts);
+        const raw = await sqlDb.select().from(workouts).orderBy(asc(workouts.name));
         return raw.map((workout) => ({
             id: workout.id,
             name: workout.name,
@@ -25,13 +25,13 @@ class Repository {
         } as Workout));
     }
 
-    async addWorkout(id: string, name: string): Promise<Workout> {
+    async addWorkout(name: string): Promise<Workout> {
         const now = new Date().toISOString();
         const newWorkout = await sqlDb.insert(workouts).values({
-            id: id,
             name: name,
             createdAt: now,
             updatedAt: now,
+            id: this.generateId(),
         }).returning();
 
         return newWorkout[0];
@@ -43,7 +43,19 @@ class Repository {
         return result.changes === 1;
     }
 
+    async addExercise(name: string, workoutId: string, url: string | null): Promise<Workout> {
+        const now = new Date().toISOString();
+        const newWorkout = await sqlDb.insert(workouts).values({
+            name: name,
+            createdAt: now,
+            updatedAt: now,
+            id: this.generateId(),
+        }).returning();
+
+        return newWorkout[0];
+    }
 }
 
 const repository = new Repository();
 export { repository };
+

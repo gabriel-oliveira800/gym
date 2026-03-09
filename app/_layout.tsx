@@ -2,18 +2,14 @@ import { Stack } from 'expo-router';
 import { SQLiteProvider } from 'expo-sqlite';
 import { Suspense, useEffect, useState } from 'react';
 
-import { ActivityIndicator } from "react-native";
+import { ActivityIndicator, StatusBar } from "react-native";
 
 import { DB_NAME, initDb } from '@/db/db';
 
-import BgContainer from '@/components/bg-container';
+import BgContainer from '@/components/customs/bg-container';
 import { ModalsProvider } from '@/contexts/modal-context';
 
 import '@/global.css';
-
-export const unstable_settings = {
-  anchor: '(tabs)',
-};
 
 export default function RootLayout() {
   const [loading, setLoading] = useState(true);
@@ -38,6 +34,7 @@ export default function RootLayout() {
         options={{ enableChangeListener: true }}
         useSuspense>
         <ModalsProvider>
+          <StatusBar backgroundColor="#0F1115" barStyle="light-content" />
           <Stack>
             <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
           </Stack>

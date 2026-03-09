@@ -4,7 +4,7 @@ import { Tabs } from "expo-router";
 import { BarChart3, Dumbbell, Home, LayoutGrid } from 'lucide-react-native';
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-import TabHeader from "@/components/tab-header";
+import TabHeader from "@/screens/tabs/tab-header";
 
 export default function Layout() {
   const padding = 16;

@@ -6,6 +6,9 @@
       "@/*": [
         "./*"
       ],
+      "@/screens/*": [
+        "./app/_components/*"
+      ],
       "@/components/*": [
         "./components/*"
       ],

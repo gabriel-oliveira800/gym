@@ -1,17 +1,34 @@
 import { Plus } from 'lucide-react-native';
-import { useState } from 'react';
-import { ActivityIndicator } from 'react-native';
+import { useEffect, useState } from 'react';
+import { ActivityIndicator, Text, View } from 'react-native';
 
 import { useModal } from '@/hooks/useModal';
+import { Exercise } from '@/service/data/exercises';
+import { Workout } from '@/service/data/workout';
+import { repository } from '@/service/repository';
 
-import AddButton from '@/components/add-button';
-import BgContainer from '@/components/bg-container';
-import Header from '@/components/header';
-import AddNewExerciseModal from '@/components/modal/add-new-exercise';
+import AddNewExerciseModal from '@/screens/exercises/add-new-exercise';
+
+import AddButton from '@/components/buttons/add-button';
+import BgContainer from '@/components/customs/bg-container';
+import Header from '@/components/customs/header';
 
 export default function ExercisesScreen() {
-    const { keys, closeModal, openModal } = useModal();
+    const { openModal } = useModal();
     const [loading, setLoading] = useState(false);
+    const [workouts, setWorkouts] = useState<Workout[]>([]);
+    const [exercises, setExercises] = useState<Exercise[]>([]);
+
+    useEffect(() => {
+        const loadWorkouts = async () => {
+            const workouts = await repository.getWorkouts();
+            setWorkouts(workouts);
+            setLoading(false);
+        };
+        loadWorkouts();
+
+        return () => { loadWorkouts(); };
+    }, []);
 
     if (loading) {
         return (
@@ -33,14 +50,29 @@ export default function ExercisesScreen() {
             </Header>
 
             <AddNewExerciseModal
-                onClose={() => closeModal('add-exercise')}
-                onSave={() => { }}
-                segments={[]}
-                newEx={{ name: '', segment: '', urlImage: '' }}
-                setNewEx={() => { }}
-                SEGMENT_SUGGESTIONS={{}}
-                handleSelectSuggestion={() => { }}
+                workouts={workouts}
+                onFinished={(exercise) => setExercises((prev) => [...prev, exercise])}
             />
+
+            <View className="gap-3 my-8">
+                {exercises.map((exercise) => (
+                    <View
+                        key={exercise.id}
+                        className="bg-gray-800 p-4 rounded-xl"
+                    >
+                        <Text className="text-white font-bold">
+                            {exercise.name}
+                        </Text>
+
+                        <Text className="text-gray-400">
+                            {exercise.workoutId}
+                        </Text>
+                    </View>
+                ))}
+            </View>
+
+
+
         </BgContainer>
     );
 }

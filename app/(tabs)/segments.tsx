@@ -6,10 +6,11 @@ import { FlatGrid } from 'react-native-super-grid';
 import { Workout } from '@/service/data/workout';
 import { repository } from '@/service/repository';
 
-import BgContainer from '@/components/bg-container';
-import Header from '@/components/header';
-import InputWithButton from '@/components/input-with-button';
-import WorkoutItem from '@/components/workout-item';
+import WorkoutItem from '@/screens/segments/workout-item';
+
+import BgContainer from '@/components/customs/bg-container';
+import Header from '@/components/customs/header';
+import InputWithButton from '@/components/inputs/input-with-button';
 
 export default function SegmentsScreen() {
     const [name, setName] = useState('');
@@ -21,8 +22,7 @@ export default function SegmentsScreen() {
             return Alert.alert('Nome inválido', 'O nome do segmento não pode ser vazio');
         }
 
-        const id = repository.generateId();
-        repository.addWorkout(id, name).then((workout) => {
+        repository.addWorkout(name).then((workout) => {
             setName('');
             setWorkouts((prev) => [...prev, workout]);
         });
