@@ -45,4 +45,6 @@ app.*.map.json
 /android/app/release
 
 assets/gifs/*
+!assets/gifs/.gitkeep
 assets/previews/*
+!assets/previews/.gitkeep
