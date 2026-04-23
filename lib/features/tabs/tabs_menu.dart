@@ -14,7 +14,7 @@ class TabsMenu extends StatefulWidget {
 }
 
 class _TabsMenuState extends State<TabsMenu> {
-  final TabsController _controller = Binds().get<TabsController>();
+  final TabsController _controller = Binds.get<TabsController>();
 
   @override
   Widget build(BuildContext context) {

@@ -8,9 +8,14 @@ import '../../../shared/theme/app_colors.dart';
 import '../../../shared/theme/app_text_styles.dart';
 
 class PlanningToday extends StatelessWidget {
+  final bool hasTraining;
   final VoidCallback onOpenModal;
 
-  const PlanningToday({super.key, required this.onOpenModal});
+  const PlanningToday({
+    super.key,
+    required this.onOpenModal,
+    required this.hasTraining,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -33,11 +38,14 @@ class PlanningToday extends StatelessWidget {
               ),
             ],
           ),
-          AddButton(
-            icon: LucideIcons.plus,
-            onPressed: onOpenModal,
-            size: AppSizes.buttonSizeSmall,
-            iconSize: AppSizes.iconMd,
+          Visibility(
+            visible: hasTraining,
+            child: AddButton(
+              icon: LucideIcons.plus,
+              onPressed: onOpenModal,
+              size: AppSizes.buttonSizeSmall,
+              iconSize: AppSizes.iconMd,
+            ),
           ),
         ],
       ),

@@ -1,66 +1,36 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 
-import '../../../shared/constants/app_sizes.dart';
-import '../../../shared/constants/app_strings.dart';
-import '../../../shared/theme/app_colors.dart';
-import '../../../shared/theme/app_text_styles.dart';
+import '../../../core/index.dart';
+import '../../../shared/index.dart';
 
 class TrainingList extends StatelessWidget {
-  final List<String> training;
+  final Trainings trainings;
+  final ValueChanged<Training> onTap;
 
-  const TrainingList({super.key, required this.training});
+  const TrainingList({
+    super.key,
+    required this.trainings,
+    required this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    if (training.isEmpty) {
-      return Container(
-        height: MediaQuery.of(context).size.height *
-            AppSizes.emptyListHeightRatio,
-        margin: const EdgeInsets.only(top: AppSizes.spacing8),
-        decoration: BoxDecoration(
-          color:
-              AppColors.surfaceLight.withValues(alpha: AppSizes.softTint),
-          borderRadius: BorderRadius.circular(AppSizes.radius16),
-          border: Border.all(
-            color: AppColors.gray700,
-            style: BorderStyle.solid,
-          ),
-        ),
-        child: const Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                LucideIcons.dumbbell,
-                size: AppSizes.iconXl,
-                color: AppColors.primary,
-              ),
-              SizedBox(height: AppSizes.spacing16),
-              Text(
-                AppStrings.homeEmptyTraining,
-                style: AppTextStyles.emptyStateText,
-              ),
-            ],
-          ),
-        ),
-      );
-    }
-
     return Column(
-      children: training.map((item) {
+      children: trainings.map((training) {
         return Padding(
           padding: const EdgeInsets.only(top: AppSizes.spacing16),
           child: Material(
             color: AppColors.surfaceLight,
             borderRadius: BorderRadius.circular(AppSizes.radius12),
             child: InkWell(
-              onTap: () {},
+              onTap: () => onTap(training),
               borderRadius: BorderRadius.circular(AppSizes.radius12),
               child: Container(
                 height: AppSizes.trainingItemHeight,
                 padding: const EdgeInsets.symmetric(
-                    horizontal: AppSizes.spacing16),
+                  horizontal: AppSizes.spacing16,
+                ),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(AppSizes.radius12),
                   border: const Border(
@@ -73,38 +43,24 @@ class TrainingList extends StatelessWidget {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(item, style: AppTextStyles.trainingItemTitle),
-                        const SizedBox(height: AppSizes.spacing8),
-                        Row(
-                          children: AppSizes.defaultTrainingDays.map((day) {
-                            return Padding(
-                              padding: const EdgeInsets.only(
-                                  right: AppSizes.spacing4),
-                              child: Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: AppSizes.spacing8,
-                                  vertical: AppSizes.spacing2,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.primary.withValues(
-                                    alpha: AppSizes.softTintMin,
-                                  ),
-                                  borderRadius: BorderRadius.circular(
-                                      AppSizes.radius100),
-                                ),
-                                child: Text(
-                                  day.toUpperCase(),
-                                  style: AppTextStyles.trainingDayTag,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                        ),
-                      ],
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            training.name,
+                            style: AppTextStyles.trainingItemTitle,
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                          const SizedBox(height: AppSizes.spacing8),
+                          Row(
+                            children: _sortedLabels(training.weekdays)
+                                .map(_buildDayTag)
+                                .toList(),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       width: AppSizes.chevronCircle,
@@ -114,10 +70,7 @@ class TrainingList extends StatelessWidget {
                           alpha: AppSizes.softTint,
                         ),
                         shape: BoxShape.circle,
-                        border: Border.all(
-                          color: AppColors.gray700,
-                          style: BorderStyle.solid,
-                        ),
+                        border: Border.all(color: AppColors.gray700),
                       ),
                       child: const Center(
                         child: Icon(
@@ -134,6 +87,31 @@ class TrainingList extends StatelessWidget {
           ),
         );
       }).toList(),
+    );
+  }
+
+  List<String> _sortedLabels(List<int> weekdays) {
+    final sorted = [...weekdays]..sort();
+    return sorted.map(weekdayShortLabel).where((s) => s.isNotEmpty).toList();
+  }
+
+  Widget _buildDayTag(String label) {
+    return Padding(
+      padding: const EdgeInsets.only(right: AppSizes.spacing4),
+      child: Container(
+        padding: const EdgeInsets.symmetric(
+          horizontal: AppSizes.spacing8,
+          vertical: AppSizes.spacing2,
+        ),
+        decoration: BoxDecoration(
+          color: AppColors.primary.withValues(alpha: AppSizes.softTintMin),
+          borderRadius: BorderRadius.circular(AppSizes.radius100),
+        ),
+        child: Text(
+          label.toUpperCase(),
+          style: AppTextStyles.trainingDayTag,
+        ),
+      ),
     );
   }
 }

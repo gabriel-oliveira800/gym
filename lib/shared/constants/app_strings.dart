@@ -15,7 +15,7 @@ abstract class AppStrings {
 
   // Home
   static const String homeSectionTrainingOfDayPrefix = 'TREINO DE ';
-  static const String homeSectionPlan = 'PLANO PARA PRÓXIMOS DIAS';
+  static const String homeSectionPlan = 'TREINOS';
   static const String homeHeroTitle = 'Peito';
   static const String homeHeroSubtitle = 'Supino Reto';
   static const String homeEmptyTraining = 'Nenhum treino hoje';
@@ -42,7 +42,30 @@ abstract class AppStrings {
   static const String newTrainingTitle = 'Novo Plano de Treino';
   static const String trainingNameLabel = 'Nome do treino';
   static const String trainingNamePlaceholder = 'Ex: Treino de Perna';
-  static const String trainingSegmentsLabel = 'Segmentos Alvo';
+  static const String trainingDaysLabel = 'Dias da semana';
+  static const String trainingExercisesLabel = 'Exercícios';
+  static const String trainingExercisesEmpty = 'Você ainda não tem exercícios cadastrados. Adicione na aba Exercícios.';
+
+  // Home empty state
+  static const String emptyHomeTitle = 'Crie seu primeiro treino';
+  static const String emptyHomeSubtitle = 'Monte um plano semanal com seus exercícios favoritos.';
+  static const String emptyHomeCtaButton = 'Criar treino';
+
+  // Training detail
+  static const String trainingDetailTitle = 'Treino';
+  static const String trainingDetailExercisesLabel = 'Exercícios';
+  static const String trainingDetailEmpty = 'Nenhum exercício vinculado a esse treino.';
+  static const String trainingDetailEditTooltip = 'Editar treino';
+  static const String trainingDetailDeleteTooltip = 'Deletar treino';
+
+  // Edit training
+  static const String editTrainingTitle = 'Editar Treino';
+  static const String joinExerciseTitle = 'Vincular novo exercício';
+
+  // Delete confirmation
+  static const String deleteTrainingTitle = 'Deletar treino?';
+  static const String deleteTrainingMessage = 'Essa ação não pode ser desfeita.';
+  static const String buttonDelete = 'Deletar';
 
   // Buttons
   static const String buttonCancel = 'Cancelar';
@@ -53,6 +76,6 @@ abstract class AppStrings {
 
   // Generic
   static const String genericErrorPrefix = 'Erro: ';
-  static String noExercises = 'Nenhum exercício adicionado ainda';
-  static String noWorkouts = 'Nenhum segmento adicionado ainda';
+  static const String noExercises = 'Nenhum exercício adicionado ainda';
+  static const String noWorkouts = 'Nenhum segmento adicionado ainda';
 }

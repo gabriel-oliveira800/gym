@@ -1,23 +1,21 @@
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../core/index.dart';
 import '../../../shared/index.dart';
 
-class ExerciseListItem extends StatelessWidget {
+class TrainingExerciseItem extends StatelessWidget {
   final Exercise exercise;
-  final ValueChanged<String> onDelete;
+  final ResourceField? resource;
 
-  const ExerciseListItem({
+  const TrainingExerciseItem({
     super.key,
     required this.exercise,
-    required this.onDelete,
+    required this.resource,
   });
 
   @override
   Widget build(BuildContext context) {
-    final resource = Binds.get<ResourceRepository>().findByIdOrNull(exercise.urlId);
-
     return Container(
       padding: const EdgeInsets.all(AppSizes.spacing12),
       decoration: BoxDecoration(
@@ -35,23 +33,11 @@ class ExerciseListItem extends StatelessWidget {
               color: AppColors.surface,
               child: resource != null
                   ? Image.asset(
-                      resource.previewPath,
+                      resource!.previewPath,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => const Center(
-                        child: Icon(
-                          LucideIcons.image,
-                          size: AppSizes.iconMd,
-                          color: AppColors.gray700,
-                        ),
-                      ),
+                      errorBuilder: (_, __, ___) => const _FallbackIcon(),
                     )
-                  : const Center(
-                      child: Icon(
-                        LucideIcons.image,
-                        size: AppSizes.iconMd,
-                        color: AppColors.gray700,
-                      ),
-                    ),
+                  : const _FallbackIcon(),
             ),
           ),
           const SizedBox(width: AppSizes.spacing16),
@@ -68,18 +54,22 @@ class ExerciseListItem extends StatelessWidget {
               ],
             ),
           ),
-          GestureDetector(
-            onTap: () => onDelete(exercise.id),
-            child: const Padding(
-              padding: EdgeInsets.all(AppSizes.spacing8),
-              child: Icon(
-                LucideIcons.trash2,
-                size: AppSizes.iconMd,
-                color: AppColors.gray600,
-              ),
-            ),
-          ),
         ],
+      ),
+    );
+  }
+}
+
+class _FallbackIcon extends StatelessWidget {
+  const _FallbackIcon();
+
+  @override
+  Widget build(BuildContext context) {
+    return const Center(
+      child: Icon(
+        LucideIcons.image,
+        size: AppSizes.iconMd,
+        color: AppColors.gray700,
       ),
     );
   }

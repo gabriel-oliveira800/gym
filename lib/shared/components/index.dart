@@ -10,6 +10,7 @@ export 'image_gallery_item.dart';
 export 'input_dropdown.dart';
 export 'input_label.dart';
 export 'input_with_button.dart';
+export 'exercise_selector.dart';
 export 'input_with_label.dart';
 export 'state_builder.dart';
 export 'visible_area.dart';

@@ -1,10 +1,19 @@
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
 import '../../../shared/index.dart';
 
 class HomeHeader extends StatelessWidget {
-  const HomeHeader({super.key});
+  final String title;
+  final String subtitle;
+  final ResourceField resource;
+
+  const HomeHeader({
+    super.key,
+    required this.title,
+    required this.subtitle,
+    required this.resource,
+  });
 
   String _getDayName() {
     final now = DateTime.now();
@@ -60,36 +69,52 @@ class HomeHeader extends StatelessWidget {
                     ),
                     child: Opacity(
                       opacity: .8,
-                      child: Image.asset(
-                        fit: BoxFit.cover,
-                        resources.first.gifPath,
-                        errorBuilder: (_, __, ___) => Container(
-                          color: AppColors.surface,
-                          child: const Icon(
-                            Icons.image,
-                            color: AppColors.gray700,
-                            size: AppSizes.iconMd,
+                      child: AnimatedSwitcher(
+                        duration: const Duration(milliseconds: 400),
+                        child: SizedBox(
+                          width: double.infinity,
+                          child: Image.asset(
+                            resource.gifPath,
+                            fit: BoxFit.cover,
+                            key: ValueKey(resource.id),
+                            errorBuilder: (_, __, ___) => Container(
+                              color: AppColors.surface,
+                              child: const Icon(
+                                Icons.image,
+                                color: AppColors.gray700,
+                                size: AppSizes.iconMd,
+                              ),
+                            ),
                           ),
                         ),
                       ),
                     ),
                   ),
-
-                  const Positioned(
+                  Positioned(
                     bottom: AppSizes.spacing16,
                     left: AppSizes.spacing16,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          AppStrings.homeHeroTitle,
-                          style: AppTextStyles.heroTitle,
+                    right: AppSizes.spacing16,
+                    child: AnimatedSwitcher(
+                      duration: const Duration(milliseconds: 300),
+                      child: SizedBox(
+                        width: double.infinity,
+                        child: Column(
+                          key: ValueKey('${resource.id}-$title-$subtitle'),
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              title,
+                              style: AppTextStyles.heroTitle,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                            Text(
+                              subtitle,
+                              style: AppTextStyles.heroSubtitle,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ],
                         ),
-                        Text(
-                          AppStrings.homeHeroSubtitle,
-                          style: AppTextStyles.heroSubtitle,
-                        ),
-                      ],
+                      ),
                     ),
                   ),
                 ],

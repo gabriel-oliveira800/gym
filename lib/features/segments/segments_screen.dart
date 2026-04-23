@@ -15,7 +15,7 @@ class SegmentsScreen extends StatefulWidget {
 }
 
 class _SegmentsScreenState extends State<SegmentsScreen> {
-  final SegmentsController _controller = Binds().get<SegmentsController>();
+  final SegmentsController _controller = Binds.get<SegmentsController>();
   final TextEditingController _input = TextEditingController();
 
   @override

@@ -15,4 +15,8 @@ extension StringExtensions on String {
     }
     return result.replaceAll(' ', '-');
   }
+
+  List<int> toWeekdayList() {
+    return split(',').map((s) => int.tryParse(s.trim()) ?? -1).where((i) => i >= 1 && i <= 7).toList();
+  }
 }

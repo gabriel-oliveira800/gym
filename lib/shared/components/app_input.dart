@@ -58,10 +58,11 @@ class _AppInputState extends State<AppInput> {
         controller: _controller,
         onChanged: widget.onChanged,
         style: AppTextStyles.inputText,
+        keyboardType: TextInputType.text,
         decoration: InputDecoration(
+          filled: true,
           hintText: widget.placeholder,
           hintStyle: AppTextStyles.inputHint,
-          filled: true,
           fillColor: AppColors.surfaceLight,
           contentPadding: const EdgeInsets.symmetric(
             horizontal: AppSizes.spacing16,

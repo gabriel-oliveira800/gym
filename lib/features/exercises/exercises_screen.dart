@@ -19,7 +19,7 @@ class _ExercisesScreenState extends State<ExercisesScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = Binds().get<ExercisesController>()..start();
+    _controller = Binds.get<ExercisesController>()..start();
   }
 
   @override

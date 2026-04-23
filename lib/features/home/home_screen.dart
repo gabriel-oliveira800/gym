@@ -18,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   void initState() {
     super.initState();
-    _controller = Binds().get<HomeController>()..start();
+    _controller = Binds.get<HomeController>()..start();
   }
 
   @override
@@ -27,25 +27,68 @@ class _HomeScreenState extends State<HomeScreen> {
     super.dispose();
   }
 
+  void _openAddTrainingModal(Exercises exercises) {
+    showModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => AddTrainingModal(
+        exercises: exercises,
+        onSave: _controller.createTraining,
+      ),
+    );
+  }
+
+  void _onTrainingTap(Training training) {
+    AppNavigation.toTrainingDetail(training.id);
+  }
+
+  void _handleRefresh() {
+    // final refresh = GoRouterState.of(context).uri.queryParameters['refresh'];
+    // if (refresh ?? false) _controller.load();
+  }
+
   @override
   Widget build(BuildContext context) {
-    return StateBuilder<Workouts>(
+    _handleRefresh();
+
+    return StateBuilder<HomeData>(
       listenable: _controller,
-      success: (context, workouts) => BgContainer(
-        child: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const HomeHeader(),
-              PlanningToday(onOpenModal: () {}),
-              const SizedBox(height: AppSizes.spacing8),
-              const TrainingList(
-                training: ['Treino 1', 'Treino 2', 'Treino 3'],
-              ),
-            ],
+      success: (context, data) {
+        return BgContainer(
+          child: SingleChildScrollView(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TrainingExerciseCarousel(
+                  exercises: data.todayExercises,
+                  builder: (context, resource, title, subtitle) => HomeHeader(
+                    resource: resource,
+                    title: title,
+                    subtitle: subtitle,
+                  ),
+                ),
+                PlanningToday(
+                  hasTraining: data.trainings.isNotEmpty,
+                  onOpenModal: () => _openAddTrainingModal(data.allExercises),
+                ),
+                const SizedBox(height: AppSizes.spacing8),
+                if (data.trainings.isEmpty)
+                  EmptyHome(
+                    onCreate: () => _openAddTrainingModal(data.allExercises),
+                  )
+                else
+                  TrainingList(
+                    trainings: data.trainings,
+                    onTap: _onTrainingTap,
+                  ),
+                const SizedBox(height: AppSizes.spacing24),
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      },
     );
   }
 }

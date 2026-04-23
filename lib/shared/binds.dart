@@ -19,9 +19,11 @@ class Binds {
 
     _injector.addSingleton<WorkoutDao>(() => get<AppDatabase>().workoutDao);
     _injector.addSingleton<ExerciseDao>(() => get<AppDatabase>().exerciseDao);
+    _injector.addSingleton<TrainingDao>(() => get<AppDatabase>().trainingDao);
 
     _injector.addSingleton<WorkoutRepository>(WorkoutRepository.new);
     _injector.addSingleton<ExerciseRepository>(ExerciseRepository.new);
+    _injector.addSingleton<TrainingRepository>(TrainingRepository.new);
     _injector.addSingleton<ResourceRepository>(ResourceRepository.new);
 
     _injector.add<HomeController>(HomeController.new);
@@ -29,10 +31,11 @@ class Binds {
     _injector.add<SegmentsController>(SegmentsController.new);
     _injector.add<StatsController>(StatsController.new);
     _injector.add<TabsController>(TabsController.new);
+    _injector.add<TrainingDetailController>(TrainingDetailController.new);
 
     _injector.commit();
     _committed = true;
   }
 
-  T get<T extends Object>() => _injector.get<T>();
+  static T get<T extends Object>() => Binds()._injector.get<T>();
 }

@@ -21,7 +21,7 @@ class AddExerciseModal extends StatefulWidget {
 }
 
 class _AddExerciseModalState extends State<AddExerciseModal> {
-  final ResourceRepository _resourceRepository = Binds().get<ResourceRepository>();
+  final ResourceRepository _resourceRepository = Binds.get<ResourceRepository>();
 
   String _name = '';
   bool _isLoading = false;

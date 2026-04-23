@@ -12,7 +12,7 @@ class StatsScreen extends StatefulWidget {
 
 class _StatsScreenState extends State<StatsScreen> {
   // ignore: unused_field
-  final StatsController _controller = Binds().get<StatsController>();
+  final StatsController _controller = Binds.get<StatsController>();
 
   @override
   Widget build(BuildContext context) {

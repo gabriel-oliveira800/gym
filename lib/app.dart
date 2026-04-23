@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'shared/constants/app_strings.dart';
-import 'shared/router/navigation.dart';
-import 'shared/theme/app_colors.dart';
+import 'shared/index.dart';
 
 class GymApp extends StatefulWidget {
   const GymApp({super.key});
@@ -31,8 +29,9 @@ class _GymAppState extends State<GymApp> {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       title: AppStrings.appTitle,
-      routerConfig: AppNavigation.config,
+      routerConfig: AppNavigation.routes,
       debugShowCheckedModeBanner: false,
+      scaffoldMessengerKey: Helpers.scaffoldMessengerKey,
       theme: ThemeData(
         useMaterial3: true,
         brightness: Brightness.dark,

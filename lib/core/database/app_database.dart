@@ -1,22 +1,31 @@
-import 'package:drift/drift.dart';
 import 'package:drift_flutter/drift_flutter.dart';
 import 'package:path_provider/path_provider.dart';
+import 'package:drift/drift.dart';
 
-import 'tables/index.dart';
 import 'daos/index.dart';
 import 'seed.dart';
+import 'tables/index.dart';
 
 part 'app_database.g.dart';
 
 @DriftDatabase(
-  daos: [WorkoutDao, ExerciseDao],
-  tables: [WorkoutsTable, ExercisesTable],
+  daos: [
+    WorkoutDao,
+    ExerciseDao,
+    TrainingDao,
+  ],
+  tables: [
+    WorkoutsTable,
+    ExercisesTable,
+    TrainingsTable,
+    TrainingExercisesTable,
+  ],
 )
 class AppDatabase extends _$AppDatabase {
   AppDatabase() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   static const _name = 'gym_app';
 
@@ -35,6 +44,12 @@ class AppDatabase extends _$AppDatabase {
       onCreate: (m) async {
         await m.createAll();
         await seedDatabase(this);
+      },
+      onUpgrade: (m, from, to) async {
+        if (from < 2) {
+          await m.createTable(trainingsTable);
+          await m.createTable(trainingExercisesTable);
+        }
       },
     );
   }

@@ -2,7 +2,8 @@ enum AllRoutes {
   home('/home'),
   exercises('/exercises'),
   segments('/segments'),
-  stats('/stats');
+  stats('/stats'),
+  trainingDetail('/training/:id');
 
   final String path;
   const AllRoutes(this.path);
@@ -10,7 +11,9 @@ enum AllRoutes {
   factory AllRoutes.fromRoute(String? route) {
     return AllRoutes.values.firstWhere(
       orElse: () => AllRoutes.home,
-      (tab) => tab.path.contains(route ?? ''),
+      (tab) => !tab.path.contains(':') && tab.path.contains(route ?? ''),
     );
   }
+
+  static String trainingDetailPath(String id) => '/training/$id';
 }
