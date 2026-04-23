@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import '../constants/app_sizes.dart';
 import 'add_button.dart';
 import 'app_input.dart';
 
@@ -31,7 +32,7 @@ class InputWithButton extends StatelessWidget {
             placeholder: placeholder,
           ),
         ),
-        const SizedBox(width: 8),
+        const SizedBox(width: AppSizes.spacing8),
         AddButton(icon: LucideIcons.plus, onPressed: onSend),
       ],
     );

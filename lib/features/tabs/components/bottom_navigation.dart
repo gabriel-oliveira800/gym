@@ -1,7 +1,9 @@
-import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:lucide_icons/lucide_icons.dart';
 
-import '../../../shared/index.dart';
+import '../../../shared/constants/app_sizes.dart';
+import '../../../shared/constants/app_strings.dart';
+import '../../../shared/theme/app_colors.dart';
 
 class BottomNavigation extends StatelessWidget {
   final int selectedIndex;
@@ -15,10 +17,13 @@ class BottomNavigation extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final top = const BorderSide(color: AppColors.surfaceLight, width: 1);
+    const top = BorderSide(
+      color: AppColors.surfaceLight,
+      width: AppSizes.borderWidthThin,
+    );
 
     return Container(
-      decoration: BoxDecoration(border: Border(top: top)),
+      decoration: const BoxDecoration(border: Border(top: top)),
       child: BottomNavigationBar(
         onTap: onItemSelected,
         currentIndex: selectedIndex,
@@ -28,19 +33,19 @@ class BottomNavigation extends StatelessWidget {
         unselectedItemColor: AppColors.gray500,
         items: const [
           BottomNavigationBarItem(
-            label: 'Home',
+            label: AppStrings.tabHome,
             icon: Icon(LucideIcons.home),
           ),
           BottomNavigationBarItem(
-            label: 'Exercícios',
+            label: AppStrings.tabExercises,
             icon: Icon(LucideIcons.dumbbell),
           ),
           BottomNavigationBarItem(
-            label: 'Segmentos',
+            label: AppStrings.tabSegments,
             icon: Icon(LucideIcons.layoutGrid),
           ),
           BottomNavigationBarItem(
-            label: 'Estatísticas',
+            label: AppStrings.tabStats,
             icon: Icon(LucideIcons.barChart3),
           ),
         ],

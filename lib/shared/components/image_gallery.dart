@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+
+import '../../core/entity/index.dart';
+import '../constants/app_sizes.dart';
 import '../theme/app_colors.dart';
-import '../../data/models/resource_field.dart';
+
 import 'image_gallery_item.dart';
 
 class ImageGallery extends StatelessWidget {
-  final List<ResourceField> items;
+  final ResourceFields items;
   final ResourceField? value;
   final ValueChanged<ResourceField> onSelected;
 
@@ -19,29 +22,29 @@ class ImageGallery extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: AppColors.surfaceLight.withValues(alpha: 0.3),
-        borderRadius: BorderRadius.circular(12),
+        color: AppColors.surfaceLight.withValues(alpha: AppSizes.softTint),
+        borderRadius: BorderRadius.circular(AppSizes.radius12),
         border: Border.all(
           color: AppColors.surfaceLight,
           style: BorderStyle.solid,
         ),
       ),
-      padding: const EdgeInsets.all(8),
+      padding: const EdgeInsets.all(AppSizes.spacing8),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 4,
-          crossAxisSpacing: 8,
-          mainAxisSpacing: 8,
+          mainAxisSpacing: AppSizes.spacing8,
+          crossAxisSpacing: AppSizes.spacing8,
+          crossAxisCount: AppSizes.gallerysColumns,
         ),
         itemCount: items.length,
         itemBuilder: (context, index) {
           final item = items[index];
           return ImageGalleryItem(
             item: item,
-            isSelected: value?.id == item.id,
             onSelected: onSelected,
+            isSelected: value?.id == item.id,
           );
         },
       ),

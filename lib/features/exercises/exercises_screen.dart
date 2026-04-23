@@ -1,67 +1,90 @@
-import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:gym/features/tabs/components/tab_header.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../../providers/exercise_provider.dart';
-import '../../providers/workout_provider.dart';
-import 'components/add_exercise_modal.dart';
-import '../../shared/components/add_button.dart';
-import '../../shared/components/app_header.dart';
-import '../../shared/components/bg_container.dart';
-import '../../shared/components/bg_loading.dart';
-import 'components/exercise_list_item.dart';
+import 'package:flutter/material.dart';
 
-class ExercisesScreen extends ConsumerWidget {
+import '../../shared/index.dart';
+
+import 'exercises_controller.dart';
+import 'components/index.dart';
+
+class ExercisesScreen extends StatefulWidget {
   const ExercisesScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    final exercisesAsync = ref.watch(exercisesProvider);
-    final workoutsAsync = ref.watch(workoutsProvider);
+  State<ExercisesScreen> createState() => _ExercisesScreenState();
+}
 
-    final isLoading = exercisesAsync.isLoading || workoutsAsync.isLoading;
-    if (isLoading) return const BgLoading();
+class _ExercisesScreenState extends State<ExercisesScreen> {
+  late final ExercisesController _controller;
 
-    final exercises = exercisesAsync.valueOrNull ?? [];
-    final workouts = workoutsAsync.valueOrNull ?? [];
+  @override
+  void initState() {
+    super.initState();
+    _controller = Binds().get<ExercisesController>()..start();
+  }
 
-    return Scaffold(
-      body: BgContainer(
-        child: Column(
-          children: [
-            AppHeader(
-              title: 'EXERCÍCIOS',
-              trailing: AddButton(
-                icon: LucideIcons.plus,
-                size: 48,
-                iconSize: 24,
-                onPressed: () {
-                  showModalBottomSheet(
-                    context: context,
-                    useRootNavigator: true,
-                    isScrollControlled: true,
-                    backgroundColor: Colors.transparent,
-                    builder: (_) => AddExerciseModal(workouts: workouts),
-                  );
-                },
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  void _openAddModal(BuildContext context, ExercisesData data) {
+    showModalBottomSheet(
+      context: context,
+      useRootNavigator: true,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (_) => AddExerciseModal(
+        workouts: data.workouts,
+        controller: _controller,
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return StateBuilder<ExercisesData>(
+      listenable: _controller,
+      success: (context, data) => Scaffold(
+        body: BgContainer(
+          child: Column(
+            children: [
+              AppHeader(
+                title: AppStrings.exercisesTitle,
+                trailing: AddButton(
+                  icon: LucideIcons.plus,
+                  size: AppSizes.buttonSizeSmall,
+                  iconSize: AppSizes.iconLg,
+                  onPressed: () => _openAddModal(context, data),
+                ),
               ),
-            ),
-            const SizedBox(height: 32),
-            Expanded(
-              child: ListView.separated(
-                itemCount: exercises.length,
-                separatorBuilder: (_, __) => const SizedBox(height: 12),
-                itemBuilder: (context, index) {
-                  return ExerciseListItem(
-                    exercise: exercises[index],
-                    onDelete: (id) {
-                      ref.read(exerciseDaoProvider).deleteExercise(id);
+              const SizedBox(height: AppSizes.spacing32),
+              Expanded(
+                child: Visibility(
+                  visible: data.exercises.isNotEmpty,
+                  replacement: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Icon(LucideIcons.box, size: 64, color: AppColors.gray600),
+                      const SizedBox(height: AppSizes.spacing16),
+                      Text(AppStrings.noExercises, style: AppTextStyles.bodyLg),
+                    ],
+                  ),
+                  child: ListView.separated(
+                    itemCount: data.exercises.length,
+                    separatorBuilder: (_, __) => const SizedBox(height: AppSizes.spacing12),
+                    itemBuilder: (context, index) {
+                      return ExerciseListItem(
+                        exercise: data.exercises[index],
+                        onDelete: (id) => _controller.deleteExercise(id),
+                      );
                     },
-                  );
-                },
+                  ),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

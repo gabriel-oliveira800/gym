@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../constants/app_sizes.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
 class AppHeader extends StatelessWidget {
   final String title;
@@ -20,18 +22,10 @@ class AppHeader extends StatelessWidget {
       children: [
         Row(
           children: [
-            Text(
-              title,
-              style: const TextStyle(
-                color: AppColors.white,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-                fontStyle: FontStyle.italic,
-              ),
-            ),
+            Text(title, style: AppTextStyles.headerXl),
             if (icon != null) ...[
-              const SizedBox(width: 8),
-              Icon(icon, color: AppColors.primary, size: 24),
+              const SizedBox(width: AppSizes.spacing8),
+              Icon(icon, color: AppColors.primary, size: AppSizes.iconLg),
             ],
           ],
         ),

@@ -1,5 +1,5 @@
 // AUTO GENERATED FILE. DO NOT EDIT
-import '../../data/models/resource_field.dart';
+import '../../core/entity/resource_field.dart';
 
 const List<ResourceField> resources = [
   ResourceField(
@@ -5209,7 +5209,7 @@ const List<ResourceField> resources = [
     gifPath: 'assets/gifs/triceps--v-bar-tricep-pushdown.gif',
     previewPath: 'assets/previews/triceps--v-bar-tricep-pushdown.png',
     segment: 'triceps',
-  )
+  ),
 ];
 
 ResourceField? findResourceById(String id) {
@@ -5225,9 +5225,7 @@ List<ResourceField> searchResources({String? segment, String? query}) {
     if (segment != null && r.segment != segment) return false;
     if (query != null && query.isNotEmpty) {
       final q = query.toLowerCase();
-      return r.id.toLowerCase().contains(q) ||
-          r.name.toLowerCase().contains(q) ||
-          r.segment.toLowerCase().contains(q);
+      return r.id.toLowerCase().contains(q) || r.name.toLowerCase().contains(q) || r.segment.toLowerCase().contains(q);
     }
     return true;
   }).toList();

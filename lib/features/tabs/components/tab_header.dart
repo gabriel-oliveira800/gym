@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+
+import '../../../shared/constants/app_sizes.dart';
+import '../../../shared/constants/app_strings.dart';
 import '../../../shared/theme/app_colors.dart';
+import '../../../shared/theme/app_text_styles.dart';
 
 class TabHeader extends StatelessWidget implements PreferredSizeWidget {
   const TabHeader({super.key});
 
   @override
-  Size get preferredSize => Size.fromHeight(120);
+  Size get preferredSize => const Size.fromHeight(AppSizes.tabHeaderHeight);
 
   @override
   Widget build(BuildContext context) {
@@ -17,46 +21,44 @@ class TabHeader extends StatelessWidget implements PreferredSizeWidget {
         child: Container(
           decoration: const BoxDecoration(
             border: Border(
-              bottom: BorderSide(color: AppColors.surfaceLight, width: 1),
+              bottom: BorderSide(
+                color: AppColors.surfaceLight,
+                width: AppSizes.borderWidthThin,
+              ),
             ),
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 16),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.pageHorizontal,
+            vertical: AppSizes.spacing16,
+          ),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Row(
                 children: [
                   Container(
-                    padding: const EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(AppSizes.spacing8 - 2),
                     decoration: BoxDecoration(
                       color: AppColors.primary,
-                      borderRadius: BorderRadius.circular(8),
+                      borderRadius: BorderRadius.circular(AppSizes.radius8),
                     ),
-                    child: const Icon(LucideIcons.dumbbell, size: 24, color: AppColors.white),
+                    child: const Icon(
+                      LucideIcons.dumbbell,
+                      size: AppSizes.iconLg,
+                      color: AppColors.white,
+                    ),
                   ),
-                  const SizedBox(width: 8),
+                  const SizedBox(width: AppSizes.spacing8),
                   const Text.rich(
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: 'TRAIN',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                            fontStyle: FontStyle.italic,
-                            letterSpacing: -0.5,
-                          ),
+                          text: AppStrings.brandPrefix,
+                          style: AppTextStyles.brandText,
                         ),
                         TextSpan(
-                          text: 'FIT',
-                          style: TextStyle(
-                            color: AppColors.primary,
-                            fontSize: 20,
-                            fontWeight: FontWeight.w900,
-                            fontStyle: FontStyle.italic,
-                            letterSpacing: -0.5,
-                          ),
+                          text: AppStrings.brandSuffix,
+                          style: AppTextStyles.brandAccent,
                         ),
                       ],
                     ),
@@ -64,20 +66,22 @@ class TabHeader extends StatelessWidget implements PreferredSizeWidget {
                 ],
               ),
               ClipRRect(
-                borderRadius: BorderRadius.circular(20),
+                borderRadius: BorderRadius.circular(AppSizes.radius20),
                 child: Container(
-                  width: 40,
-                  height: 40,
+                  width: AppSizes.avatarSize,
+                  height: AppSizes.avatarSize,
                   decoration: BoxDecoration(
                     color: AppColors.surfaceLight,
                     border: Border.all(
-                      color: AppColors.primary.withValues(alpha: 0.3),
-                      width: 2,
+                      color: AppColors.primary.withValues(
+                        alpha: AppSizes.softTint,
+                      ),
+                      width: AppSizes.borderWidthMedium,
                     ),
-                    borderRadius: BorderRadius.circular(20),
+                    borderRadius: BorderRadius.circular(AppSizes.radius20),
                   ),
                   child: Image.network(
-                    'https://images.unsplash.com/photo-1526506118085-60ce8714f8c5?q=80&w=774&auto=format&fit=crop',
+                    AppStrings.profileImageUrl,
                     fit: BoxFit.cover,
                     errorBuilder: (_, __, ___) => const Icon(
                       Icons.person,

@@ -1,85 +1,94 @@
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:lucide_icons/lucide_icons.dart';
 import 'package:flutter/material.dart';
 
-import '../../providers/workout_provider.dart';
-
+import '../../core/entity/workout.dart';
 import '../../shared/index.dart';
 
 import 'components/workout_item.dart';
+import 'segments_controller.dart';
 
-class SegmentsScreen extends ConsumerStatefulWidget {
+class SegmentsScreen extends StatefulWidget {
   const SegmentsScreen({super.key});
 
   @override
-  ConsumerState<SegmentsScreen> createState() => _SegmentsScreenState();
+  State<SegmentsScreen> createState() => _SegmentsScreenState();
 }
 
-class _SegmentsScreenState extends ConsumerState<SegmentsScreen> {
-  final _controller = TextEditingController();
+class _SegmentsScreenState extends State<SegmentsScreen> {
+  final SegmentsController _controller = Binds().get<SegmentsController>();
+  final TextEditingController _input = TextEditingController();
 
-  Future<void> _addWorkout() async {
-    final name = _controller.text.trim();
-    if (name.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('O nome do segmento não pode ser vazio'),
-        ),
-      );
-      return;
-    }
-    await ref.read(workoutDaoProvider).insertWorkout(name);
-    _controller.clear();
+  @override
+  void initState() {
+    super.initState();
+    _controller.start();
   }
 
   @override
   void dispose() {
+    _input.dispose();
     _controller.dispose();
     super.dispose();
   }
 
+  Future<void> _addWorkout() async {
+    final result = await _controller.createWorkout(_input.text);
+    if (!mounted) return;
+    result.fold(
+      onSuccess: (_) => _input.clear(),
+      onFailure: (failure) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(failure.message)),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
-    final workoutsAsync = ref.watch(workoutsProvider);
-
-    return workoutsAsync.when(
-      loading: () => const BgLoading(),
-      error: (err, _) => BgContainer(
-        child: Center(
-          child: Text('Erro: $err', style: const TextStyle(color: Colors.white)),
-        ),
-      ),
-      data: (workouts) => BgContainer(
+    return StateBuilder<Workouts>(
+      listenable: _controller,
+      success: (context, workouts) => BgContainer(
         child: Column(
           children: [
-            AppHeader(
-              title: 'Segmentos',
+            const AppHeader(
+              title: AppStrings.segmentsTitle,
               icon: LucideIcons.layoutGrid,
             ),
-            const SizedBox(height: 8),
+            const SizedBox(height: AppSizes.spacing8),
             InputWithButton(
-              placeholder: 'Nome do segmento',
-              controller: _controller,
+              placeholder: AppStrings.segmentsPlaceholder,
+              controller: _input,
               onSend: _addWorkout,
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: AppSizes.spacing16),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  mainAxisSpacing: 12,
-                  crossAxisSpacing: 12,
-                  childAspectRatio: 130 / 60,
+              child: Visibility(
+                visible: workouts.isNotEmpty,
+                replacement: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Icon(LucideIcons.box, size: 64, color: AppColors.gray600),
+                    const SizedBox(height: AppSizes.spacing16),
+                    Text(AppStrings.noWorkouts, style: AppTextStyles.bodyLg),
+                  ],
                 ),
-                itemCount: workouts.length,
-                itemBuilder: (context, index) {
-                  return WorkoutItem(
-                    workout: workouts[index],
-                    onRemove: (workout) {
-                      ref.read(workoutDaoProvider).deleteWorkout(workout.id);
-                    },
-                  );
-                },
+                child: GridView.builder(
+                  itemCount: workouts.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: AppSizes.segmentsGridColumns,
+                    mainAxisSpacing: AppSizes.spacing12,
+                    crossAxisSpacing: AppSizes.spacing12,
+                    childAspectRatio: AppSizes.segmentsGridAspect,
+                  ),
+                  itemBuilder: (context, index) {
+                    return WorkoutItem(
+                      workout: workouts[index],
+                      onRemove: (workout) => _controller.deleteWorkout(workout.id),
+                    );
+                  },
+                ),
               ),
             ),
           ],

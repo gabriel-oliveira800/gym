@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_sizes.dart';
 import '../theme/app_colors.dart';
 
 class AppIconButton extends StatelessWidget {
@@ -12,12 +13,15 @@ class AppIconButton extends StatelessWidget {
     return GestureDetector(
       onTap: onPressed,
       child: Container(
-        width: 32,
-        height: 32,
+        width: AppSizes.iconButtonSize,
+        height: AppSizes.iconButtonSize,
         decoration: BoxDecoration(
           color: AppColors.surfaceLight,
           shape: BoxShape.circle,
-          border: Border.all(color: AppColors.gray700, width: 1),
+          border: Border.all(
+            color: AppColors.gray700,
+            width: AppSizes.borderWidthThin,
+          ),
         ),
         child: Center(child: icon),
       ),

@@ -1,3 +1,5 @@
+typedef ResourceFields = List<ResourceField>;
+
 class ResourceField {
   final String id;
   final String name;

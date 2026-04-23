@@ -1,11 +1,13 @@
-import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
+import 'package:flutter/material.dart';
+
+import '../../core/entity/index.dart';
+import '../constants/app_sizes.dart';
 import '../theme/app_colors.dart';
-import '../../data/models/resource_field.dart';
 
 class ImageGalleryItem extends StatelessWidget {
-  final ResourceField item;
   final bool isSelected;
+  final ResourceField item;
   final ValueChanged<ResourceField> onSelected;
 
   const ImageGalleryItem({
@@ -21,29 +23,44 @@ class ImageGalleryItem extends StatelessWidget {
       onTap: () => onSelected(item),
       child: Container(
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(AppSizes.radius8),
           border: Border.all(
             color: isSelected ? AppColors.primary : Colors.transparent,
-            width: 2,
+            width: AppSizes.borderWidthMedium,
           ),
         ),
         clipBehavior: Clip.hardEdge,
         child: Stack(
           fit: StackFit.expand,
           children: [
-            Image.asset(
-              item.previewPath,
-              fit: BoxFit.cover,
-              errorBuilder: (_, __, ___) => Container(
-                color: AppColors.surface,
-                child: const Icon(Icons.image, color: AppColors.gray700, size: 20),
+            ClipRRect(
+              borderRadius: BorderRadius.circular(
+                isSelected ? AppSizes.radius6 : 0,
+              ),
+              child: Image.asset(
+                fit: BoxFit.cover,
+                isSelected ? item.gifPath : item.previewPath,
+                errorBuilder: (_, __, ___) => Container(
+                  color: AppColors.surface,
+                  child: const Icon(
+                    Icons.image,
+                    color: AppColors.gray700,
+                    size: AppSizes.iconMd,
+                  ),
+                ),
               ),
             ),
             if (isSelected)
               Container(
-                color: AppColors.primary.withValues(alpha: 0.2),
+                color: AppColors.primary.withValues(
+                  alpha: AppSizes.softTintLight,
+                ),
                 child: const Center(
-                  child: Icon(LucideIcons.checkCircle2, size: 16, color: AppColors.white),
+                  child: Icon(
+                    LucideIcons.checkCircle2,
+                    size: AppSizes.iconXs,
+                    color: AppColors.white,
+                  ),
                 ),
               ),
           ],

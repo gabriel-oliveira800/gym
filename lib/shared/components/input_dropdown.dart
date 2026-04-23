@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import '../constants/app_sizes.dart';
+import '../constants/app_strings.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 import 'input_label.dart';
 
 class DropdownItem {
@@ -36,18 +39,13 @@ class _InputDropdownState extends State<InputDropdown> {
 
   List<DropdownItem> get _filteredItems {
     if (_searchQuery.isEmpty) return widget.items;
-    return widget.items
-        .where(
-            (item) => item.label.toLowerCase().contains(_searchQuery.toLowerCase()))
-        .toList();
+    return widget.items.where((item) => item.label.toLowerCase().contains(_searchQuery.toLowerCase())).toList();
   }
 
   String? get _selectedLabel {
     if (widget.currentValue == null) return null;
     try {
-      return widget.items
-          .firstWhere((item) => item.value == widget.currentValue)
-          .label;
+      return widget.items.firstWhere((item) => item.value == widget.currentValue).label;
     } catch (_) {
       return null;
     }
@@ -80,6 +78,7 @@ class _InputDropdownState extends State<InputDropdown> {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     final borderColor = _isOpen ? AppColors.primaryDark : AppColors.gray700;
 
     return Column(
@@ -89,11 +88,11 @@ class _InputDropdownState extends State<InputDropdown> {
         GestureDetector(
           onTap: _toggleDropdown,
           child: Container(
-            height: 60,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
+            height: AppSizes.dropdownHeight,
+            padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing16),
             decoration: BoxDecoration(
               color: AppColors.surfaceLight,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppSizes.radius12),
               border: Border.all(color: borderColor),
             ),
             child: Row(
@@ -101,18 +100,13 @@ class _InputDropdownState extends State<InputDropdown> {
                 Expanded(
                   child: Text(
                     _selectedLabel ?? widget.placeholder,
-                    style: TextStyle(
-                      color: _selectedLabel != null
-                          ? AppColors.white
-                          : AppColors.gray500,
-                      fontSize: 16,
-                    ),
+                    style: _selectedLabel != null ? AppTextStyles.inputText : AppTextStyles.inputHint,
                   ),
                 ),
                 Icon(
                   _isOpen ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
                   color: AppColors.white,
-                  size: 24,
+                  size: AppSizes.iconLg,
                 ),
               ],
             ),
@@ -121,20 +115,20 @@ class _InputDropdownState extends State<InputDropdown> {
         if (_isOpen)
           Container(
             constraints: BoxConstraints(
-              maxHeight: MediaQuery.of(context).size.height * 0.5,
+              maxHeight: size.height * AppSizes.dropdownMaxHeightRatio,
             ),
-            margin: const EdgeInsets.only(top: 4),
+            margin: const EdgeInsets.only(top: AppSizes.spacing4),
             decoration: BoxDecoration(
               color: AppColors.surfaceLight,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppSizes.radius12),
               border: Border.all(color: borderColor),
             ),
             child: Column(
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  height: 64,
-                  padding: const EdgeInsets.symmetric(horizontal: 12),
+                  height: AppSizes.inputHeight,
+                  padding: const EdgeInsets.symmetric(horizontal: AppSizes.spacing12),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(color: borderColor),
@@ -144,28 +138,28 @@ class _InputDropdownState extends State<InputDropdown> {
                     child: TextField(
                       controller: _searchController,
                       onChanged: (v) => setState(() => _searchQuery = v),
-                      style:
-                          const TextStyle(color: AppColors.white, fontSize: 16),
+                      style: AppTextStyles.inputText,
                       decoration: InputDecoration(
-                        hintText: 'Digite para buscar...',
-                        hintStyle: const TextStyle(
-                            color: AppColors.gray500, fontSize: 16),
+                        hintText: AppStrings.dropdownSearchPlaceholder,
+                        hintStyle: AppTextStyles.inputHint,
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppSizes.radius12),
                           borderSide: BorderSide(color: borderColor),
                         ),
                         enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppSizes.radius12),
                           borderSide: BorderSide(color: borderColor),
                         ),
                         focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(AppSizes.radius12),
                           borderSide: BorderSide(color: borderColor),
                         ),
                         filled: true,
                         fillColor: AppColors.surfaceLight,
                         contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 8),
+                          horizontal: AppSizes.spacing12,
+                          vertical: AppSizes.spacing8,
+                        ),
                       ),
                     ),
                   ),
@@ -178,14 +172,13 @@ class _InputDropdownState extends State<InputDropdown> {
                       final item = _filteredItems[index];
                       final isSelected = item.value == widget.currentValue;
                       return ListTile(
-                        title: Text(
-                          item.label,
-                          style: const TextStyle(
-                              color: AppColors.white, fontSize: 16),
-                        ),
+                        title: Text(item.label, style: AppTextStyles.inputText),
                         trailing: isSelected
-                            ? const Icon(Icons.check,
-                                color: AppColors.white, size: 20)
+                            ? const Icon(
+                                Icons.check,
+                                color: AppColors.white,
+                                size: AppSizes.iconMd,
+                              )
                             : null,
                         onTap: () => _selectItem(item),
                       );
@@ -195,7 +188,7 @@ class _InputDropdownState extends State<InputDropdown> {
               ],
             ),
           ),
-        const SizedBox(height: 8),
+        const SizedBox(height: AppSizes.spacing8),
       ],
     );
   }

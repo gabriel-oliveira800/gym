@@ -29,3 +29,13 @@ const List<DayOfWeek> daysOfWeek = [
   DayOfWeek('Sex', 'sex'),
   DayOfWeek('Sáb', 'sab'),
 ];
+
+const List<String> weekdayFullNames = [
+  'segunda-feira',
+  'terça-feira',
+  'quarta-feira',
+  'quinta-feira',
+  'sexta-feira',
+  'sábado',
+  'domingo',
+];

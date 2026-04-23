@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_sizes.dart';
 import '../theme/app_colors.dart';
 
 class BgContainer extends StatelessWidget {
@@ -13,7 +14,10 @@ class BgContainer extends StatelessWidget {
       child: SafeArea(
         bottom: false,
         child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24, vertical: 8),
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.pageHorizontal,
+            vertical: AppSizes.pageVertical,
+          ),
           child: child,
         ),
       ),

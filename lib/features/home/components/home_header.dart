@@ -1,60 +1,50 @@
-import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../../../shared/theme/app_colors.dart';
+import 'package:flutter/material.dart';
+
+import '../../../shared/index.dart';
 
 class HomeHeader extends StatelessWidget {
   const HomeHeader({super.key});
 
   String _getDayName() {
-    final weekdays = [
-      'segunda-feira',
-      'terça-feira',
-      'quarta-feira',
-      'quinta-feira',
-      'sexta-feira',
-      'sábado',
-      'domingo',
-    ];
     final now = DateTime.now();
-    return weekdays[now.weekday - 1].split('-')[0].toUpperCase();
+    return weekdayFullNames[now.weekday - 1].split('-')[0].toUpperCase();
   }
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 24),
+      padding: const EdgeInsets.only(bottom: AppSizes.spacing24),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Padding(
-            padding: const EdgeInsets.only(bottom: 16),
+            padding: const EdgeInsets.only(bottom: AppSizes.spacing16),
             child: Row(
               children: [
-                const Icon(LucideIcons.clock, size: 18, color: AppColors.primary),
-                const SizedBox(width: 8),
+                const Icon(
+                  LucideIcons.clock,
+                  size: AppSizes.iconSm,
+                  color: AppColors.primary,
+                ),
+                const SizedBox(width: AppSizes.spacing8),
                 Text(
-                  'TREINO DE ${_getDayName()}',
-                  style: const TextStyle(
-                    color: AppColors.primary,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 14,
-                  ),
+                  '${AppStrings.homeSectionTrainingOfDayPrefix}${_getDayName()}',
+                  style: AppTextStyles.sectionTitle,
                 ),
               ],
             ),
           ),
           ClipRRect(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppSizes.radius16),
             child: Container(
-              height: 192,
+              height: AppSizes.heroHeight,
               width: double.infinity,
               color: AppColors.surfaceLight,
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Placeholder for hero image
                   Container(color: AppColors.surfaceLight),
-                  // Gradient overlay
                   Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
@@ -62,33 +52,42 @@ class HomeHeader extends StatelessWidget {
                         end: Alignment.bottomCenter,
                         colors: [
                           Colors.transparent,
-                          Colors.black.withValues(alpha: 0.4),
+                          Colors.black.withValues(
+                            alpha: AppSizes.backgroundDim,
+                          ),
                         ],
                       ),
                     ),
-                  ),
-                  // Text content
-                  Positioned(
-                    bottom: 16,
-                    left: 16,
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: const [
-                        Text(
-                          'Peito',
-                          style: TextStyle(
-                            color: AppColors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                    child: Opacity(
+                      opacity: .8,
+                      child: Image.asset(
+                        fit: BoxFit.cover,
+                        resources.first.gifPath,
+                        errorBuilder: (_, __, ___) => Container(
+                          color: AppColors.surface,
+                          child: const Icon(
+                            Icons.image,
+                            color: AppColors.gray700,
+                            size: AppSizes.iconMd,
                           ),
                         ),
+                      ),
+                    ),
+                  ),
+
+                  const Positioned(
+                    bottom: AppSizes.spacing16,
+                    left: AppSizes.spacing16,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
                         Text(
-                          'Supino Reto',
-                          style: TextStyle(
-                            color: Color(0xFFFB923C), // orange-400
-                            fontSize: 14,
-                            fontWeight: FontWeight.w500,
-                          ),
+                          AppStrings.homeHeroTitle,
+                          style: AppTextStyles.heroTitle,
+                        ),
+                        Text(
+                          AppStrings.homeHeroSubtitle,
+                          style: AppTextStyles.heroSubtitle,
                         ),
                       ],
                     ),

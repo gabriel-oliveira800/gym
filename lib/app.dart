@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
-import 'shared/theme/app_colors.dart';
+import 'shared/constants/app_strings.dart';
 import 'shared/router/navigation.dart';
+import 'shared/theme/app_colors.dart';
 
 class GymApp extends StatefulWidget {
   const GymApp({super.key});
@@ -29,7 +30,7 @@ class _GymAppState extends State<GymApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      title: 'Treinos',
+      title: AppStrings.appTitle,
       routerConfig: AppNavigation.config,
       debugShowCheckedModeBanner: false,
       theme: ThemeData(

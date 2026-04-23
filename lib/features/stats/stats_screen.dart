@@ -1,16 +1,25 @@
 import 'package:flutter/material.dart';
-import '../../shared/theme/app_colors.dart';
-import '../../shared/components/bg_container.dart';
 
-class StatsScreen extends StatelessWidget {
+import '../../shared/index.dart';
+import 'stats_controller.dart';
+
+class StatsScreen extends StatefulWidget {
   const StatsScreen({super.key});
 
   @override
+  State<StatsScreen> createState() => _StatsScreenState();
+}
+
+class _StatsScreenState extends State<StatsScreen> {
+  // ignore: unused_field
+  final StatsController _controller = Binds().get<StatsController>();
+
+  @override
   Widget build(BuildContext context) {
-    return BgContainer(
-      child: const Center(
+    return const BgContainer(
+      child: Center(
         child: Text(
-          'Statistics',
+          AppStrings.statsPlaceholder,
           style: TextStyle(color: AppColors.white, fontSize: 16),
         ),
       ),

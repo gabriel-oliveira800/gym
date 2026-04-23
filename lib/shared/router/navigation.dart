@@ -1,12 +1,12 @@
-import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
-import '../index.dart';
-import '../../features/index.dart';
-import '../../features/home/home_screen.dart';
 import '../../features/exercises/exercises_screen.dart';
+import '../../features/home/home_screen.dart';
 import '../../features/segments/segments_screen.dart';
 import '../../features/stats/stats_screen.dart';
+import '../../features/tabs/tabs_menu.dart';
+import 'routes.dart';
 
 abstract class AppNavigation {
   static final _key = GlobalKey<NavigatorState>();

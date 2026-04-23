@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../constants/app_sizes.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
 class AppInput extends StatefulWidget {
   final String? value;
@@ -11,7 +13,7 @@ class AppInput extends StatefulWidget {
   const AppInput({
     super.key,
     this.value,
-    this.maxHeight = 64,
+    this.maxHeight = AppSizes.inputHeight,
     this.onChanged,
     this.controller,
     required this.placeholder,
@@ -55,25 +57,28 @@ class _AppInputState extends State<AppInput> {
         minLines: null,
         controller: _controller,
         onChanged: widget.onChanged,
-        style: const TextStyle(color: AppColors.white, fontSize: 16),
+        style: AppTextStyles.inputText,
         decoration: InputDecoration(
           hintText: widget.placeholder,
-          hintStyle: const TextStyle(color: AppColors.gray500, fontSize: 16),
+          hintStyle: AppTextStyles.inputHint,
           filled: true,
           fillColor: AppColors.surfaceLight,
-          contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: AppSizes.spacing16,
+            vertical: AppSizes.spacing12,
+          ),
           border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSizes.radius12),
             borderSide: BorderSide(
               color: _focused ? AppColors.primary : AppColors.gray700,
             ),
           ),
           enabledBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSizes.radius12),
             borderSide: const BorderSide(color: AppColors.gray700),
           ),
           focusedBorder: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(AppSizes.radius12),
             borderSide: const BorderSide(color: AppColors.primary),
           ),
         ),

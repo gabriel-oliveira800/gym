@@ -1,11 +1,12 @@
-import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import '../../../shared/theme/app_colors.dart';
-import '../../../data/database/app_database.dart';
+import 'package:flutter/material.dart';
+
+import '../../../core/entity/workout.dart';
+import '../../../shared/index.dart';
 
 class WorkoutItem extends StatelessWidget {
-  final WorkoutsTableData workout;
-  final ValueChanged<WorkoutsTableData> onRemove;
+  final Workout workout;
+  final ValueChanged<Workout> onRemove;
 
   const WorkoutItem({
     super.key,
@@ -16,10 +17,10 @@ class WorkoutItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(AppSizes.spacing16),
       decoration: BoxDecoration(
         color: AppColors.surfaceLight,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppSizes.radius16),
         border: Border.all(color: AppColors.gray700),
       ),
       child: Row(
@@ -28,26 +29,25 @@ class WorkoutItem extends StatelessWidget {
           Expanded(
             child: Text(
               workout.name,
-              style: const TextStyle(
-                color: AppColors.gray200,
-                fontWeight: FontWeight.bold,
-                fontSize: 14,
-                letterSpacing: 0.5,
-              ),
+              style: AppTextStyles.segmentItemName,
               overflow: TextOverflow.ellipsis,
             ),
           ),
           GestureDetector(
             onTap: () => onRemove(workout),
             child: Container(
-              width: 32,
-              height: 32,
+              width: AppSizes.iconButtonSize,
+              height: AppSizes.iconButtonSize,
               decoration: BoxDecoration(
                 color: AppColors.primary,
-                borderRadius: BorderRadius.circular(8),
+                borderRadius: BorderRadius.circular(AppSizes.radius8),
               ),
               child: const Center(
-                child: Icon(LucideIcons.trash2, size: 16, color: AppColors.white),
+                child: Icon(
+                  LucideIcons.trash2,
+                  size: AppSizes.iconXs,
+                  color: AppColors.white,
+                ),
               ),
             ),
           ),

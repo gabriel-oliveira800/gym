@@ -2,34 +2,31 @@ import 'package:go_router/go_router.dart';
 import 'package:flutter/material.dart';
 
 import '../../shared/index.dart';
+import 'components/index.dart';
+import 'tabs_controller.dart';
 
-import 'components/bottom_navigation.dart';
-import 'components/tab_header.dart';
-
-class TabsMenu extends StatelessWidget {
+class TabsMenu extends StatefulWidget {
   final Widget child;
   const TabsMenu({super.key, required this.child});
 
-  int _getCurrentIndex(BuildContext context) {
-    return AllRoutes.fromRoute(GoRouterState.of(context).fullPath).index;
-  }
+  @override
+  State<TabsMenu> createState() => _TabsMenuState();
+}
 
-  void _onNavItemSelected(int index) {
-    final selectedTab = AllRoutes.values[index];
-    AppNavigation.tabNavigation(selectedTab);
-  }
+class _TabsMenuState extends State<TabsMenu> {
+  final TabsController _controller = Binds().get<TabsController>();
 
   @override
   Widget build(BuildContext context) {
-    final selectedIndex = _getCurrentIndex(context);
+    final selectedIndex = _controller.indexForRoute(GoRouterState.of(context).fullPath);
 
     return Scaffold(
-      body: child,
+      body: widget.child,
       appBar: const TabHeader(),
       backgroundColor: AppColors.background,
       bottomNavigationBar: BottomNavigation(
         selectedIndex: selectedIndex,
-        onItemSelected: _onNavItemSelected,
+        onItemSelected: _controller.onItemSelected,
       ),
     );
   }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import '../theme/app_colors.dart';
+import '../constants/app_sizes.dart';
+import '../theme/app_text_styles.dart';
 
 class InputLabel extends StatelessWidget {
   final String label;
@@ -9,16 +10,11 @@ class InputLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 16, left: 4),
-      child: Text(
-        label.toUpperCase(),
-        style: const TextStyle(
-          color: AppColors.gray500,
-          fontSize: 10,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.5,
-        ),
+      padding: const EdgeInsets.only(
+        bottom: AppSizes.spacing16,
+        left: AppSizes.spacing4,
       ),
+      child: Text(label.toUpperCase(), style: AppTextStyles.smallLabel),
     );
   }
 }

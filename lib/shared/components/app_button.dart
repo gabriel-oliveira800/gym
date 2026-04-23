@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import '../constants/app_sizes.dart';
 import '../theme/app_colors.dart';
+import '../theme/app_text_styles.dart';
 
 class AppButton extends StatelessWidget {
   final String text;
@@ -16,8 +18,8 @@ class AppButton extends StatelessWidget {
     this.onPressed,
     this.isLoading = false,
     this.backgroundColor = AppColors.primary,
-    this.height = 56,
-    this.borderRadius = 6,
+    this.height = AppSizes.buttonHeight,
+    this.borderRadius = AppSizes.radius6,
     this.opacity,
   });
 
@@ -25,7 +27,7 @@ class AppButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: Opacity(
-        opacity: opacity ?? (onPressed != null ? 1.0 : 0.5),
+        opacity: opacity ?? (onPressed != null ? 1.0 : AppSizes.disabledOpacity),
         child: SizedBox(
           height: height,
           child: ElevatedButton(
@@ -39,21 +41,14 @@ class AppButton extends StatelessWidget {
             ),
             child: isLoading
                 ? const SizedBox(
-                    width: 20,
-                    height: 20,
+                    width: AppSizes.iconMd,
+                    height: AppSizes.iconMd,
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
                       color: AppColors.white,
                     ),
                   )
-                : Text(
-                    text,
-                    style: const TextStyle(
-                      color: AppColors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 14,
-                    ),
-                  ),
+                : Text(text, style: AppTextStyles.buttonText),
           ),
         ),
       ),

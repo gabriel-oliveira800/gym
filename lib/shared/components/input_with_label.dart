@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../constants/app_sizes.dart';
 import 'app_input.dart';
 import 'input_label.dart';
 
@@ -21,7 +22,7 @@ class InputWithLabel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 96,
+      height: AppSizes.inputWithLabelHeight,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
